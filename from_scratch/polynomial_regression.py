@@ -37,9 +37,8 @@ class PolynomialRegression():
         assert(targets.shape[0] == 1)
 
         # Create polynomial_features
-        polynoial_features = np.ndarray((self.degree, features.shape[1]))
-        polynoial_features[0] = features
-        for degree in range(2, degree):
+        polynoial_features = np.ndarray((self.degree + 1, features.shape[1]))
+        for degree in range(0, degree):
             polynomial_features[degree] = features**degree
 
         # Closed form solution of weights: w = (X^{T}X)^{-1}X^{T}y
@@ -51,14 +50,14 @@ class PolynomialRegression():
             targets.T
             ).T
 
-        self.training_features = features
+        self.training_features = polynoial_features
         self.training_targets = targets
 
     def predict(self, features : np.ndarray) -> np.ndarray:
         """
         Parameters
         ----------
-        features (np.ndarray) - a 2D array of shape (# features, # examples)
+        features (np.ndarray) - a 1D array of shape (1, # examples)
 
         Output
         ------

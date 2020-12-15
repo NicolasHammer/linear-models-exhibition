@@ -9,8 +9,8 @@ class LinearRegression():
     ----------------
     weights (np.ndarray) - array of weights in the linear funciton of shape 
                            (1, # weights) = (1, # features)\n
-    features (np.ndarray) - feature data used to fit model\n
-    targets (np.ndarray) - target data used to fit model
+    training_features (np.ndarray) - feature data used to fit model\n
+    training_targets (np.ndarray) - target data used to fit model
     """
 
     def __init__(self):
@@ -32,16 +32,19 @@ class LinearRegression():
         assert(len(targets.shape) == 2)
         assert(targets.shape[0] == 1)
 
+        # Create training features
+        training_features = np.append(np.ones((1, features.shape[1])), features, axis = 0)
+
         # Closed form solution of weights: w = (X^{T}X)^{-1}X^{T}y
         self.weights = np.matmul(
             np.matmul(
-                np.lingalg.pinv(np.matmul(features, features.T)),
-                features
+                np.lingalg.pinv(np.matmul(training_features, training_features.T)),
+                training_features
                 ),
             targets.T
             ).T
 
-        self.training_features = features
+        self.training_features = training_features
         self.training_targets = targets
 
     def predict(self, features : np.ndarray) -> np.ndarray:

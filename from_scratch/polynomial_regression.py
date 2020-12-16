@@ -85,7 +85,7 @@ class PolynomialRegression():
             minimum = features.min()
             maximum = features.max()
             x = np.linspace(minimum, maximum, 100*(maximum - minimum))
-            y = self.predict(features)
+            y = self.predict(x)
 
             # Plot line and scatterplot
             ax.scatter(features.T, targets.T, c = 'g', marker = 'o')

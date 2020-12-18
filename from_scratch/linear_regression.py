@@ -8,7 +8,7 @@ class LinearRegression():
     Member Variables
     ----------------
     weights (np.ndarray) - array of weights in the linear funciton of shape 
-                           (1, # weights) = (1, # features)\n
+                           (1, # weights) = (1, 1 + # features)\n
     training_features (np.ndarray) - feature data used to fit model\n
     training_targets (np.ndarray) - target data used to fit model
     """
@@ -58,7 +58,7 @@ class LinearRegression():
         predictions (np.ndarray) - a 1D array of shape (1, # predictions) = (1, # examples)
         """
         features_with_bias = np.vstack((np.ones((1, features.shape[1])), features))
-        return np.matmul(self.weights, features_with_bias)
+        return np.matmul(self.weights, features_with_bias) # (1, 1 + # features) x (1 + # features, # examples)
 
     def visualize(self, features : np.ndarray, targets : np.ndarray, axes_labels : list) -> None:
         """

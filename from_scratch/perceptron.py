@@ -1,22 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-
-def transform_data(features: np.ndarray) -> np.ndarray:
-    """
-    Transform data.
-
-    Parameters
-    ----------
-    features (np.ndarray) - input features of shape (# features, # examples)
-
-    Output
-    ------
-    transformed_features (np.ndarray) - transformed features of shape (# features, # examples)
-    """
-    return features
-
-
 class Perceptron():
     """
     A linear perceptron for classification.
@@ -139,8 +123,6 @@ class Perceptron():
                 f"{axes_labels[1]} over {axes_labels[0]} with Decision Boundary")
             ax.set_xlabel(axes_labels[0], fontsize=12)
             ax.set_ylabel(axes_labels[1], fontsize=12)
-
-            # Show figure
             plt.show()
         elif features.shape[0] == 3:  # 3D Case
             # Syntax for 3D Projection

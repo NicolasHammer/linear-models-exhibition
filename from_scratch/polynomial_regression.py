@@ -10,7 +10,7 @@ class PolynomialRegression():
     ----------------
     degree (int) - the number of degrees in the model
     weights (np.ndarray) - array of weights in the linear funciton of shape 
-                           (1, # weights) = (1, # features)\n
+                           (1, # weights) = (1, # degree + 1)\n
     features (np.ndarray) - feature data used to fit model of shape (# features, # examples)\n
     targets (np.ndarray) - target data used to fit model of shape (1, # targets)
     """
@@ -40,7 +40,7 @@ class PolynomialRegression():
         # Create polynomial_features
         polynomial_features = np.ndarray((self.degree + 1, features.shape[1]))
         for degree in range(0, self.degree + 1):
-            polynomial_features[degree] = features**degree
+            polynomial_features[degree] = features[0]**degree
 
         # Closed form solution of weights: w = (X^{T}X)^{-1}X^{T}y
         self.weights = np.matmul(
@@ -65,9 +65,9 @@ class PolynomialRegression():
         ------
         predictions (np.ndarray) - a 1D array of shape (1, # predictions) = (1, # examples)
         """
-        predictions = np.ndarray(shape=(1, features.shape[1]))
+        predictions = np.zeros(shape=(1, features.shape[1]))
         for degree in range(0, self.degree + 1):
-            predictions += self.weights[0, degree]*(features**degree)
+            predictions += self.weights[0, degree]*(features[0]**degree)
         return predictions
 
     def visualize(self, features: np.ndarray, targets: np.ndarray, axes_labels: list) -> None:
@@ -87,15 +87,12 @@ class PolynomialRegression():
             # Define line
             minimum = features.min()
             maximum = features.max()
-            x = np.linspace(int(minimum), int(maximum),
-                            int(10*abs(maximum-minimum)))
+            x = np.linspace(int(minimum), int(maximum), int(10*abs(maximum-minimum)))
             x = x.reshape((1, x.shape[0]))
 
-            y = self.predict(x)
-
-            # Plot line and scatterplot
+            # Plot scatterplot and line
             ax.scatter(features.T, targets.T, c='g', marker='o')
-            ax.plot(x.T, y.T, c='r')
+            ax.plot(x.T, self.predict(x).T, c='r')
             ax.set_title(f"{axes_labels[1]} over {axes_labels[0]} with LSRL")
             ax.set_xlabel(axes_labels[0], fontsize=12)
             ax.set_ylabel(axes_labels[1], fontsize=12)

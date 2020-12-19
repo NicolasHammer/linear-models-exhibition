@@ -74,17 +74,10 @@ class LinearRegression():
             # Syntax for 2D Projection
             ax = plt.axes()
 
-            # Define line
-            minimum = features.min()
-            maximum = features.max()
-            x = np.linspace(int(minimum), int(maximum), 10)
-            x = x.reshape((1, x.shape[0]))
-
-            y = self.predict(x)
-
-            # Plot line and scatterplot
+            # Plot scatterplot and line
             ax.scatter(features.T, targets.T, c = 'g', marker = 'o')
-            ax.plot(x.T, y.T, c = 'r')
+            ax.plot(features.T, self.predict(features).T, c = 'r')
+
             ax.set_title(f"{axes_labels[1]} over {axes_labels[0]} with LSRL")
             ax.set_xlabel(axes_labels[0], fontsize = 12)
             ax.set_ylabel(axes_labels[1], fontsize = 12)
@@ -93,23 +86,16 @@ class LinearRegression():
             # Syntax for 3D Projection
             ax = plt.axes(projection = "3d")
 
-            # Define line
-            minX = features[0,:].min()
-            maxX = features[0,:].max()
-            x = np.linspace(int(minX), int(maxX), 10)
-            x = x.reshape((1, x.shape[0]))
-
-            minY = features[1,:].min()
-            maxY = features[1,:].max()
-            y = np.linspace(int(minY), int(maxY), 10)
-            y = y.reshape((1, y.shape[0]))
-
-            z = self.predict(np.vstack((x, y)))
-
-            # Plot line and scatterplot
+            # Plot scatterplot
             ax.scatter(features[0,:].T, features[1,:].T, targets.T, c = 'g', marker = 'o')
-            ax.plot3D(x.flatten(), y.flatten(), z.flatten(), c = 'r')
-            ax.set_title(f"{axes_labels[2]} over ({axes_labels[0]}, {axes_labels[1]}) with LSRL")
+
+            # Produce linear regression plane    
+            X, Y = np.meshgrid(features[0,:], features[1,:])
+            Z = self.predict(np.vstack((X.flatten(), Y.flatten()))).reshape(X.shape)
+
+            ax.contour3D(X, Y, Z, 50, cmap = "pink")
+
+            ax.set_title(f"{axes_labels[2]} over ({axes_labels[0]}, {axes_labels[1]}) with Least-Squares Plane")
             ax.set_xlabel(axes_labels[0], fontsize = 12)
             ax.set_ylabel(axes_labels[1], fontsize = 12)
             ax.set_zlabel(axes_labels[2], fontsize = 12)

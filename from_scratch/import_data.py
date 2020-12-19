@@ -3,36 +3,6 @@ import numpy as np
 import random
 import csv
 
-# Loading and Splitting Data
-
-
-def load_data(path: str) -> (np.ndarray, np.ndarray, list):
-    """
-    Parameters
-    ----------
-    path (str) - the file path of the csv to be loaded, where the csv has headers as the first row,
-                 targets as the last column, and floats as the data\n
-
-    Output
-    ------
-    features (np.ndarray) - array of shape (k, n) containg n samples of k features each\n
-    targets (np.ndarray) - array of shape (1, n) containing the target values of n samples\n
-    feature_names (list) - list of the names of the features
-    """
-    reader = csv.reader(open(path, 'r'))
-
-    # Extract headers
-    feature_names = list(next(reader))[:-1]  # should be list of strings
-
-    # Extract features/targets
-    data = np.array(list(reader)).T  # array including features and targets
-    targets = data[-1, :].reshape(1, data.shape[1])
-    features = np.delete(data, -1, axis=0)
-
-    # floats, ints, strings
-    return features.astype('float'), targets.astype('int'), feature_names
-
-
 def train_test_split(features: np.ndarray, targets: np.ndarray, fraction: float = 0.8) -> (np.ndarray, np.ndarray, np.ndarray, np.ndarray):
     """
     Parameters

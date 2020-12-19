@@ -69,7 +69,7 @@ class Perceptron():
                                           training_features[:, incorrect_predictions].T)
             else:
                 break
-                
+
             iterations += 1
 
         # Save training data
@@ -115,9 +115,11 @@ class Perceptron():
             ax = plt.axes()
 
             # Produce scatterplot
-            ax.scatter(features[0, targets[0] == 1].T, features[1, targets[0] == 1].T, c='b', marker='o',
+            positive_features = features[:, targets[0] == 1]
+            negative_features = features[:, targets[0] == -1]
+            ax.scatter(positive_features[0].T, positive_features[1].T, c='b', marker='o',
                        label="Positive Classification")
-            ax.scatter(features[0, targets[0] == -1].T, features[1, targets[0] == -1].T, c='r', marker='o',
+            ax.scatter(negative_features[0].T, negative_features[1].T, c='r', marker='o',
                        label="Negative Classification")
 
             # Produce perceptron line
@@ -125,7 +127,9 @@ class Perceptron():
             w_1 = self.weights[0, 1]
             w_2 = self.weights[0, 2]
 
-            perceptron = -(w_1/w_2)*features[0, :] - (w_0/w_2) if w_2 != 0 else np.zeros((features.shape[1],))
+            perceptron = (-(w_1/w_2)*features[0, :] - (w_0/w_2) 
+                if w_2 != 0 
+                else np.zeros((features.shape[1],)))
 
             # Plot line
             ax.plot(features[0, :].T, perceptron.T, c='k')
@@ -139,6 +143,48 @@ class Perceptron():
             # Show figure
             plt.show()
         elif features.shape[0] == 3:  # 3D Case
-            pass
+            # Syntax for 3D Projection
+            ax = plt.axes(projection="3d")
+
+            # Produce scatterplot
+            positive_features = features[:, targets[0] == 1]
+            negative_features = features[:, targets[0] == -1]
+            ax.scatter(positive_features[0].T, positive_features[1].T, positive_features[2].T,
+                       c='b', marker='o', label="Positive Classification")
+            ax.scatter(negative_features[0].T, negative_features[1].T, negative_features[2].T,
+                       c='r', marker='o', label="Negative Classification")
+
+            # Produce perceptron plane 
+            minX = features[0, :].min()
+            maxX = features[0, :].max()
+            x = np.linspace(int(minX), int(maxX), 10)
+            x = x.reshape((1, x.shape[0]))
+
+            minY = features[1, :].min()
+            maxY = features[1, :].max()
+            y = np.linspace(int(minY), int(maxY), 10)
+            y = y.reshape((1, y.shape[0]))
+
+            X, Y = np.meshgrid(x, y)
+
+            w_0 = self.weights[0, 0]
+            w_1 = self.weights[0, 1]
+            w_2 = self.weights[0, 2]
+            w_3 = self.weights[0, 3]
+
+            perceptron = (-(w_1/w_3)*X - (w_2/w_3)*Y - (w_0/w_3)
+                if w_3 != 0
+                else np.zeros((features.shape[1],)))
+
+            # Plot line
+            ax.contour3D(X, Y, perceptron, 50, cmap = "binary")
+
+            ax.legend(loc="upper left")
+            ax.set_title(
+                f"{axes_labels[2]} over ({axes_labels[0]}, {axes_labels[1]}) with Decision Boundary")
+            ax.set_xlabel(axes_labels[0], fontsize=12)
+            ax.set_ylabel(axes_labels[1], fontsize=12)
+            ax.set_zlabel(axes_labels[2], fontsize=12)
+            plt.show()
         else:
             raise ValueError("Data must be 2D or 3D to visualize.")

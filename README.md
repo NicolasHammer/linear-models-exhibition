@@ -10,6 +10,6 @@ Each of these models are compared against their respective scikit-learn counterp
   3. sklearn.linear_model.Perceptron
 
 The data used to illustrate the linear models are, respectively:
-  1. [Advertising.csv](http://faculty.marshall.usc.edu/gareth-james/ISL/Advertising.csv) from "An Introduction to Statistical Learning with Applications in R" by Gareth James, Daniela Witten, Trevor Hastie, and Robert Tibshirani.
+  1. [Advertising.csv](https://statlearning.com/data.html) from "An Introduction to Statistical Learning with Applications in R" by Gareth James, Daniela Witten, Trevor Hastie, and Robert Tibshirani.
   2. [bluegills.csv](https://online.stat.psu.edu/stat462/sites/onlinecourses.science.psu.edu.stat462/files/data/bluegills/index.txt) from (Cook and Weisberg, 1999).
   3. Self-generated clusters using sklearn.datasets.make_blobs()
